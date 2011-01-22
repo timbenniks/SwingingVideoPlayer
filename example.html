@@ -6,19 +6,20 @@
 	<link href="css/SwingingVideoPlayer.css" type="text/css" media="screen" rel="stylesheet" />
 </head>
 <body>
+
 	<div id="video"></div>
 	
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
-	<script type="text/javascript" src="js/jquery.swingingVideoPlayer.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+	<script src="js/jquery.swingingVideoPlayer.min.js"></script>
 	
-	<script type="text/javascript">
+	<script>
 		$('#video').swingingVideoPlayer(
 		{
 			poster: 'http://video.timbenniks.nl/lib/images/dartmoor.jpg',
-			source: 'http://video.timbenniks.nl/movies/oceans-clip.mp4',
+			source: 'http://video.timbenniks.nl/movies/oceans-clip.ogg',
 			width: 800,
 			height: 340,
-			mime: 'video/mp4',
+			mime: 'video/ogg',
 			type: 'video',
 			autoplay: 0,
 			playerLoc: 'js/player.swf'
