@@ -49,8 +49,16 @@ swingingVideoPlayer.builder.videotag.prototype =
 			this.videoTag.attr({ controls: 'controls' })
 		}
 		
-		$('<source />')
-			.attr({ src: this.options.source, type: this.options.mime })
-			.prependTo(this.videoTag);
+		this.addSources();
+	},
+	
+	addSources: function()
+	{
+		for(var i = 0; i < this.options.sources.length; i++)
+		{
+			$('<source />')
+				.attr({type: this.options.sources[i][0], src: this.options.sources[i][1] })
+				.prependTo(this.videoTag);
+		}
 	}
 };

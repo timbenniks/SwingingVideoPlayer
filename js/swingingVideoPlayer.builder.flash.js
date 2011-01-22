@@ -36,7 +36,7 @@ swingingVideoPlayer.builder.flash.prototype =
 	{
 		this.flashvars = 
 		{ 
-			file: 			this.options.source, 
+			file: 			swingingVideoPlayer.builder.flashSourceToUse, 
 			image: 			this.options.poster, 
 			controlbar: 	'none', 
 			icons: 			false, 
@@ -46,7 +46,7 @@ swingingVideoPlayer.builder.flash.prototype =
 		};
 		
 		this.randID      = Math.random().toString().replace('.', '');
-		this.flashPlayer = new SWFObject(this.options.playerLoc, 'flashPlayer'+this.randID, this.options.width, this.options.height, '9');
+		this.flashPlayer = new SWFObject(this.options.flashPlayerLoc, 'flashPlayer'+this.randID, this.options.width, this.options.height, '9');
 		
 		this.flashPlayer.addParam('allowscriptaccess','always');
 		this.flashPlayer.addParam('wmode','transparent');

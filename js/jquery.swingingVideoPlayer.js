@@ -15,6 +15,7 @@ swingingVideoPlayer.wrapper.prototype =
 {
 	init: function()
 	{
+		this.buildVideotagMimesArray();
 		this.detect();
 		this.build();
 
@@ -25,9 +26,19 @@ swingingVideoPlayer.wrapper.prototype =
 		}
 	},
 	
+	buildVideotagMimesArray: function()
+	{
+		this.options.videotagMimes = new Array();
+		
+		for(i = 0; i < this.options.sources.length; i++)
+		{
+			this.options.videotagMimes.push(this.options.sources[i][0]);
+		}
+	},
+	
 	detect: function()
 	{
-		this.detector 	  = new swingingVideoPlayer.builder.detect(this.options.mime);
+		this.detector 	  = new swingingVideoPlayer.builder.detect(this.options);
 		this.detectedKind = this.detector.getPlayerKind();
 	},
 	
@@ -55,10 +66,8 @@ swingingVideoPlayer.wrapper.prototype =
 	defaults:
 	{
 		poster: 	'',
-		source: 	'',
 		width: 		854,
 		height: 	363,
-		mime: 		'video/mp4',
 		type: 		'video',
 		autoplay: 	0,
 		playerLoc: 	'player.swf'

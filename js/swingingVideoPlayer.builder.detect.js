@@ -1,14 +1,16 @@
 // set an object with the available mime-types per plugin / player
 swingingVideoPlayer.builder.mimes = {
-	h264: 	['video/h264', 'video/mp4', 'video/wmv', 'video/x-ms-wmv'],
+	h264: 	['video/h264', 'video/mp4'],
 	theora: ['video/ogg', 'video/webm'],
-	flash:	['video/x-flv', 'video/mp4', 'video/x-youtube', 'video/x-vimeo']
+	flash:	['video/mp4']
 }
 
-swingingVideoPlayer.builder.detect = function(mime)
+swingingVideoPlayer.builder.detect = function(options)
 {
-	this.mime 	= mime;
-	this.player	= false;
+	this.options 		= options;
+	this.videotagMimes  = this.options.videotagMimes;
+	this.player			= false;
+
 	this.init();
 }
 
@@ -16,30 +18,45 @@ swingingVideoPlayer.builder.detect.prototype =
 {
 	init: function()
 	{
-		this.detectBrowserPlugins()
+		for(var i = 0; i < this.videotagMimes.length; i++)
+		{
+			this.determinePlayerKind(this.videotagMimes[i])
+		}
 	},
 	
 	// What plugins does you browser have? The higher in this list, the more important it is.
-	// So first h264, then theora, then flash.
-	detectBrowserPlugins: function()
+	// So first h264, theora, webM and flash.
+	determinePlayerKind: function(mimeToChackAgainst)
 	{
-		if(this.supportsNativeH264() && this.playableByNativeH264(this.mime)) 
+		if(this.supportsNativeH264() && this.playableByNativeH264(mimeToChackAgainst)) 
 		{
 			this.setPlayerKind('videotag');
 		}
-		else if(this.supportsNativeOggTheora() && this.playableByNativeOggTheora(this.mime)) 
+		if(this.supportsNativeOggTheora() && this.playableByNativeOggTheora(mimeToChackAgainst)) 
 		{
 			this.setPlayerKind('videotag');
 		}
-		else if(this.supportsNativeWebM() && this.playableByNativeOggTheora(this.mime)) 
+		else if(this.supportsNativeWebM() && this.playableByNativeOggTheora(mimeToChackAgainst)) 
 		{
 			this.setPlayerKind('videotag');
 		}
-		else if(this.detectFlash() && this.playableByFlash(this.mime))
+
+		// If the playerkind is not set yet try to set it to flash.
+		if(this.getPlayerKind() == '' && this.detectFlash() && this.playableByFlash(mimeToChackAgainst))
 		{
 			this.setPlayerKind('flash');
+						
+			for(b = 0; b < this.options.sources.length; b++)
+			{
+				if(this.options.sources[b][0] == mimeToChackAgainst)
+				{
+					swingingVideoPlayer.builder.flashSourceToUse = this.options.sources[b][1];
+				}
+			}
 		}
-		else if(true)
+		
+		// Still no playerkind? (The flash fallback did not work)
+		if(this.getPlayerKind() == '')
 		{
 			this.setPlayerKind('none');
 		}
@@ -55,13 +72,13 @@ swingingVideoPlayer.builder.detect.prototype =
 				&& document.createElement("video").canPlayType('video/mp4; codecs="avc1.42E01E, mp4a.40.2"');
 	},
 		
-	supportsNativeOggTheora: function(self)
+	supportsNativeOggTheora: function()
 	{
 		return  !!document.createElement('video').canPlayType 
 				&& document.createElement("video").canPlayType('video/ogg; codecs="theora, vorbis"');
-	},
+	},                           
 	
-	supportsNativeWebM: function(self)
+	supportsNativeWebM: function()
 	{
 		return  !!document.createElement('video').canPlayType 
 				&& document.createElement("video").canPlayType('video/webm; codecs="vp8, vorbis');
@@ -120,17 +137,17 @@ swingingVideoPlayer.builder.detect.prototype =
 	
 	playableByNativeH264: function(mime)
 	{	
-		return this.inArray(swingingVideoPlayer.builder.mimes.h264, this.mime)
+		return this.inArray(swingingVideoPlayer.builder.mimes.h264, mime)
 	},
 	
 	playableByNativeOggTheora: function(mime)
 	{
-		return this.inArray(swingingVideoPlayer.builder.mimes.theora, this.mime)
+		return this.inArray(swingingVideoPlayer.builder.mimes.theora, mime)
 	},
 	
 	playableByFlash: function(mime)
 	{
-		return this.inArray(swingingVideoPlayer.builder.mimes.flash, this.mime)
+		return this.inArray(swingingVideoPlayer.builder.mimes.flash, mime)
 	},
 	
 	inArray: function(array, value)
