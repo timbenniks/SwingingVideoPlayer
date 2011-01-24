@@ -7,7 +7,7 @@ swingingVideoPlayer.wrapper = function(element, options)
 	this.options 			 = $.extend({}, this.defaults, options);
 	this.options.element 	 = element;
 	this.options.touchDevice = ('ontouchstart' in window);
-	
+		
 	this.init();
 };
 

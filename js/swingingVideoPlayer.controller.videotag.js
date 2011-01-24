@@ -17,7 +17,7 @@ swingingVideoPlayer.controller.videotag.prototype =
 		
 		if('localStorage' in window)
 		{
-			this.startVol = localStorage.getItem('swingingVideoPlayer.volume');
+			this.startVol = localStorage.getItem('swingingVideoPlayer.volume') || .65;
 		}
 		else
 		{

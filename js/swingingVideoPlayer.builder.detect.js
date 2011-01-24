@@ -2,7 +2,7 @@
 swingingVideoPlayer.builder.mimes = {
 	h264: 	['video/h264', 'video/mp4'],
 	theora: ['video/ogg', 'video/webm'],
-	flash:	['video/mp4']
+	flash:	['video/mp4', 'video/x-youtube']
 }
 
 swingingVideoPlayer.builder.detect = function(options)

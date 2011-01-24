@@ -1,4 +1,4 @@
-swingingVideoPlayer.controller.template = '<div class="video-controls">' +
+swingingVideoPlayer.controller.template = '<div id="swingingVideoPlayerControls" class="video-controls">' +
 											'<span class="video-play-pause paused"></span>' +
 											'<span class="video-time">00:00</span>' +
 											'<span class="video-seeker">' +
